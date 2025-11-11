@@ -274,5 +274,5 @@ L’objectif est d’évaluer la capacité des serveurs à gérer des charges lo
 
 #### Réalisé par : 
 
-EL OUAHI Najat
+EL OUAHI Najat ET
 Hailala Yassmin
