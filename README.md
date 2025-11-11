@@ -155,9 +155,12 @@ Le fichier `prometheus.yml` définit les endpoints exposés par chaque service R
 - Définit les labels et jobs pour organiser les données dans Grafana.
   
 <img width="945" height="409" alt="image" src="https://github.com/user-attachments/assets/72c15041-c922-4927-ab3a-d93a936d04f0" />
-![WhatsApp Image 2025-11-11 à 22 55 22_9d81c988](https://github.com/user-attachments/assets/ba14eb64-9cd9-4159-90bc-fc11034dca7f)
-![WhatsApp Image 2025-11-11 à 22 55 46_c9ceb124](https://github.com/user-attachments/assets/3ff796e9-c597-40a1-b40b-b74488bb46d6)
-![WhatsApp Image 2025-11-11 à 22 56 23_2a769968](https://github.com/user-attachments/assets/66126479-7922-4978-9533-c4f1cfce7b19)
+
+<img width="902" height="498" alt="image" src="https://github.com/user-attachments/assets/57504479-345d-4a61-a0ce-e68a351cb484" />
+<img width="895" height="502" alt="image" src="https://github.com/user-attachments/assets/30bab91a-ceca-4367-aa09-6e4ee231d15e" />
+
+<img width="886" height="488" alt="image" src="https://github.com/user-attachments/assets/f0fc9a54-8440-402a-be95-7c54d26f58e9" />
+
 
 ## 🧪 7. Scénarios de tests JMeter
 
@@ -194,7 +197,7 @@ Ce scénario vise à évaluer la capacité du serveur à répondre à un **grand
 - Suivre **l’utilisation CPU et mémoire** via Prometheus et Grafana  
 - Identifier les **goulots d’étranglement liés aux lectures simultanées**
 
-![WhatsApp Image 2025-11-11 à 22 58 38_57d9c09d](https://github.com/user-attachments/assets/aeb9b197-ebd6-42df-9ebb-32c9452579a3)
+<img width="945" height="512" alt="image" src="https://github.com/user-attachments/assets/46773384-c605-43b9-a19b-f33c3e9d9e7d" />
 
 ---
 
@@ -219,7 +222,7 @@ Ce scénario simule des **POST/PUT avec des corps JSON lourds** (~5 Ko par item)
 💡 **Astuce :**  
 Pour chaque scénario, les résultats sont envoyés automatiquement à **InfluxDB**, puis visualisés dans **Grafana** pour un suivi temps réel et une comparaison des trois implémentations REST.
 
-![WhatsApp Image 2025-11-11 à 22 41 32_2a577213](https://github.com/user-attachments/assets/7ed90833-345f-4cd4-8842-f1084d6f0129)
+<img width="945" height="494" alt="image" src="https://github.com/user-attachments/assets/a18fbd05-6da3-48a1-9f05-9e6874a42022" />
 
 
 ### 📘 Scénario 3 — Join & Filter
