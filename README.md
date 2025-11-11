@@ -44,29 +44,6 @@ docker compose up --build
 
 L’architecture du projet est conçue de manière modulaire afin d’isoler chaque implémentation REST tout en mutualisant les éléments communs (scripts, configuration et monitoring).  
 Chaque module peut être exécuté et analysé indépendamment pour une comparaison précise des performances.
-projet/
-├── variant-a-jersey/           # Implémentation JAX-RS (Jersey + Grizzly) - légère et modulaire
-├── variant-c-spring-mvc/       # Implémentation REST via Spring MVC (@RestController) - équilibrée
-├── variant-d-spring-data-rest/ # Implémentation Spring Data REST - rapide à développer
-│
-├── src/
-│   ├── main/java/com/example/  # Code source principal commun
-│   └── test/java/com/example/  # Tests unitaires et d’intégration
-│
-├── idea/                       # Configuration spécifique à IntelliJ IDEA
-├── demo/                       # Fichiers et exemples de démonstration
-├── jmeter/                     # Scénarios de tests de charge Apache JMeter (.jmx)
-│
-├── pom.xml                     # Fichier Maven principal pour la compilation et la gestion des dépendances
-├── docker-compose.yml          # Déploiement des containers (Base de données, Prometheus, Grafana, API)
-├── prometheus.yml              # Configuration de Prometheus pour l’export des métriques
-│
-├── .gitignore                  # Liste des fichiers ignorés par Git
-├── README.md                   # Documentation principale du projet
-├── Compte Rendu Benchmark.pdf  # Rapport détaillé d’analyse comparative des performances
-├── category_ids.csv            # Données de test - identifiants des catégories
-├── item_ids.csv                # Données de test - identifiants des produits
-└── [autres fichiers]           # Scripts ou configurations supplémentaires
 
 <img width="728" height="790" alt="image" src="https://github.com/user-attachments/assets/2e7b7200-0c95-409d-8dc0-59053460e063" />
 
@@ -84,12 +61,17 @@ Chaque conteneur joue un rôle spécifique dans la collecte, le stockage et la v
 <img width="945" height="556" alt="image" src="https://github.com/user-attachments/assets/b3213867-5432-4504-8e87-9e52a6deddc0" />
 <img width="945" height="129" alt="image" src="https://github.com/user-attachments/assets/f657f23f-f748-4902-9e51-36216cba6bdf" />
 
+### Test des APIs
+<img width="945" height="757" alt="image" src="https://github.com/user-attachments/assets/c9d6e323-5508-43f2-b4d0-53b143394ee4" />
+<img width="945" height="727" alt="image" src="https://github.com/user-attachments/assets/d962e77a-1e70-439d-b44e-b305b531ed35" />
+
 ## 📂 5. Jeu de données initial — DataSeeder
 
 Le benchmark s’appuie sur un **jeu de données réaliste** généré automatiquement par la classe `DataSeeder`.  
 L’objectif est de simuler un environnement applicatif proche d’une vraie application e-commerce avec un volume important d’enregistrements et des relations complexes.
 
 ---
+
 
 ### ⚙️ Génération du dataset
 
