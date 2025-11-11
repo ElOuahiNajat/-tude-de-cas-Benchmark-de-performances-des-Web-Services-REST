@@ -82,6 +82,7 @@ Chaque conteneur joue un rôle spécifique dans la collecte, le stockage et la v
 <img width="945" height="524" alt="image" src="https://github.com/user-attachments/assets/65589de0-b851-4f64-b20c-30529568dbc2" />
 <img width="945" height="567" alt="image" src="https://github.com/user-attachments/assets/7f229f47-cbf7-45da-beaf-7d311393ba45" />
 <img width="945" height="556" alt="image" src="https://github.com/user-attachments/assets/b3213867-5432-4504-8e87-9e52a6deddc0" />
+<img width="945" height="129" alt="image" src="https://github.com/user-attachments/assets/f657f23f-f748-4902-9e51-36216cba6bdf" />
 
 ## 📂 5. Jeu de données initial — DataSeeder
 
@@ -153,7 +154,9 @@ Le fichier `prometheus.yml` définit les endpoints exposés par chaque service R
 - Spécifie **les targets** à surveiller (chaque variante REST : Jersey, Spring MVC, Spring Data REST).  
 - Configure **la fréquence de scraping** (intervalle entre chaque collecte de métriques).  
 - Définit les labels et jobs pour organiser les données dans Grafana.
-  
+<img width="945" height="468" alt="image" src="https://github.com/user-attachments/assets/558aa7b2-ecf3-42ee-ac06-20595cb7a2ab" />
+<img width="945" height="619" alt="image" src="https://github.com/user-attachments/assets/4705820f-34cf-403e-8194-dc254fcdcbfd" />
+
 <img width="945" height="409" alt="image" src="https://github.com/user-attachments/assets/72c15041-c922-4927-ab3a-d93a936d04f0" />
 
 <img width="902" height="498" alt="image" src="https://github.com/user-attachments/assets/57504479-345d-4a61-a0ce-e68a351cb484" />
