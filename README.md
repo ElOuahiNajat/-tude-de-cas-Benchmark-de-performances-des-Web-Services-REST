@@ -142,4 +142,145 @@ Ce dataset permet de tester efficacement :
 <img width="745" height="211" alt="image" src="https://github.com/user-attachments/assets/dc091eb8-ccba-4dd3-9dba-6e1003a7eef9" />
 <img width="550" height="244" alt="image" src="https://github.com/user-attachments/assets/d45d5f54-8eb8-497b-8814-6ff5e531995d" />
 
+## 📡 6. Configuration de Prometheus
+
+La collecte des métriques applicatives pour le benchmark est entièrement gérée par **Prometheus**.  
+Le fichier `prometheus.yml` définit les endpoints exposés par chaque service REST et les paramètres de scraping.
+
+---
+
+### ⚙️ Rôle du fichier `prometheus.yml`
+- Spécifie **les targets** à surveiller (chaque variante REST : Jersey, Spring MVC, Spring Data REST).  
+- Configure **la fréquence de scraping** (intervalle entre chaque collecte de métriques).  
+- Définit les labels et jobs pour organiser les données dans Grafana.
+  
+<img width="945" height="409" alt="image" src="https://github.com/user-attachments/assets/72c15041-c922-4927-ab3a-d93a936d04f0" />
+![WhatsApp Image 2025-11-11 à 22 55 22_9d81c988](https://github.com/user-attachments/assets/ba14eb64-9cd9-4159-90bc-fc11034dca7f)
+![WhatsApp Image 2025-11-11 à 22 55 46_c9ceb124](https://github.com/user-attachments/assets/3ff796e9-c597-40a1-b40b-b74488bb46d6)
+![WhatsApp Image 2025-11-11 à 22 56 23_2a769968](https://github.com/user-attachments/assets/66126479-7922-4978-9533-c4f1cfce7b19)
+
+## 🧪 7. Scénarios de tests JMeter
+
+Les benchmarks de performance ont été réalisés avec **Apache JMeter (v5.6.3)** afin de simuler différents types de charge sur les endpoints REST des trois implémentations :  
+- JAX-RS (Jersey)  
+- Spring MVC  
+- Spring Data REST  
+
+Trois types de scénarios ont été définis pour représenter des profils d’utilisation distincts : **lecture intensive** et **requêtes volumineuses**.
+
+---
+
+### 📘 Scénario 1 — Lecture intensive (ReadHeavy)
+
+Ce scénario vise à évaluer la capacité du serveur à répondre à un **grand nombre de requêtes GET simultanées**, en simulant un trafic fortement orienté lecture.
+
+#### 🔹 Paramètres du Thread Group
+- **Nombre d’utilisateurs (threads) :** 100  
+- **Ramp-up period :** 60 secondes  
+- **Durée totale du test :** 600 secondes  
+- **Type de requêtes :** GET sur plusieurs endpoints  
+- **Répétition :** Continue jusqu’à la fin de la durée définie  
+- **Backend Listener :** Envoi des métriques vers InfluxDB
+
+#### 🔹 Endpoints testés
+- `GET /items?page=&size=`  
+- `GET /items?categoryId=&page=&size=`  
+- `GET /categories/{id}/items?page=&size=`  
+- `GET /categories?page=&size=`
+
+#### 🔹 Objectifs du test
+- Mesurer **le throughput** (nombre de requêtes traitées par seconde)  
+- Observer la **latence moyenne et maximale**  
+- Suivre **l’utilisation CPU et mémoire** via Prometheus et Grafana  
+- Identifier les **goulots d’étranglement liés aux lectures simultanées**
+
+![WhatsApp Image 2025-11-11 à 22 58 38_57d9c09d](https://github.com/user-attachments/assets/aeb9b197-ebd6-42df-9ebb-32c9452579a3)
+
+---
+
+### 📘 Scénario 2 — HeavyBody (Requêtes volumineuses)
+
+Ce scénario simule des **POST/PUT avec des corps JSON lourds** (~5 Ko par item) afin de tester la performance du serveur lors d’opérations d’écriture intensives.
+
+#### 🔹 Paramètres du Thread Group
+- **Nombre d’utilisateurs (threads) :** 50  
+- **Ramp-up period :** 120 secondes  
+- **Durée totale du test :** 600 secondes  
+- **Type de requêtes :** POST / PUT sur les endpoints items  
+- **Backend Listener :** InfluxDB pour collecte des métriques
+
+#### 🔹 Objectifs du test
+- Évaluer la **gestion des gros payloads** par le serveur  
+- Mesurer l’impact sur **CPU, mémoire et threads actifs**  
+- Vérifier la **stabilité de l’application** sous écriture lourde
+
+---
+
+💡 **Astuce :**  
+Pour chaque scénario, les résultats sont envoyés automatiquement à **InfluxDB**, puis visualisés dans **Grafana** pour un suivi temps réel et une comparaison des trois implémentations REST.
+
+![WhatsApp Image 2025-11-11 à 22 41 32_2a577213](https://github.com/user-attachments/assets/7ed90833-345f-4cd4-8842-f1084d6f0129)
+
+
+### 📘 Scénario 3 — Join & Filter
+
+Ce scénario simule des requêtes GET complexes combinant **jointures et filtres** sur les entités `Category` et `Item`.  
+L’objectif est de mesurer les performances du serveur lors de requêtes SQL plus lourdes et de vérifier la latence côté API.
+
+#### 🔹 Paramètres du Thread Group
+- **Nombre d’utilisateurs (threads) :** 60  
+- **Ramp-up period :** 90 secondes  
+- **Durée totale du test :** 600 secondes  
+- **Type de requêtes :** GET avec paramètres de filtrage et pagination  
+- **Backend Listener :** Envoi des métriques vers InfluxDB
+
+#### 🔹 Endpoints testés
+- `GET /items?categoryId=&page=&size=&filter=price>100`  
+- `GET /categories/{id}/items?page=&size=&filter=name~"Widget"`  
+- `GET /items?page=&size=&filter=stock<50`  
+
+#### 🔹 Objectifs du test
+- Mesurer la **latence et le throughput** sur des requêtes filtrées et avec jointures  
+- Observer l’impact des **requêtes complexes sur CPU et mémoire**  
+- Comparer les performances des trois variantes REST lors d’opérations de lecture filtrées  
+
+💡 **Astuce :**  
+- Les filtres simulés peuvent être adaptés pour tester différents cas d’usage (prix, stock, texte)  
+- Les métriques collectées via InfluxDB et visualisées sur Grafana permettent de détecter rapidement les goulots d’étranglement liés aux JOIN et aux filtres complexes.
+
+![WhatsApp Image 2025-11-11 à 22 40 16_99493623](https://github.com/user-attachments/assets/b4a1fd7b-e0ba-406c-9031-4e0a6d65dfcc)
+### 📘 Scénario 4 — Mixed (Lecture + Écriture + Filtrage)
+
+Ce scénario simule un **trafic mixte**, combinant des requêtes GET, POST et PUT afin de reproduire un profil utilisateur réaliste.  
+Il permet de tester la **capacité globale du serveur** sous une charge variée.
+
+#### 🔹 Paramètres du Thread Group
+- **Nombre d’utilisateurs (threads) :** 80  
+- **Ramp-up period :** 120 secondes  
+- **Durée totale du test :** 600 secondes  
+- **Type de requêtes :** GET (lecture), POST/PUT (écriture), GET avec filtres (jointures)  
+- **Backend Listener :** InfluxDB pour collecte des métriques en temps réel
+
+#### 🔹 Endpoints testés
+- `GET /items?page=&size=` → lecture simple  
+- `GET /items?categoryId=&page=&size=&filter=price>100` → lecture filtrée  
+- `POST /items` → création d’items avec corps JSON (~5 Ko)  
+- `PUT /items/{id}` → mise à jour d’items existants  
+- `GET /categories/{id}/items?page=&size=&filter=stock<50` → jointures + filtrage  
+
+#### 🔹 Objectifs du test
+- Mesurer la **latence moyenne et maximale** sous un mix de requêtes concurrentes  
+- Suivre l’impact des écritures et des lectures filtrées sur **CPU, mémoire et threads actifs**  
+- Comparer les performances des trois implémentations REST sur un **profil utilisateur réaliste**  
+
+💡 **Astuce :**  
+- Ajuster le ratio GET/POST/PUT pour simuler différents profils de charge  
+- Les métriques remontées dans Grafana permettent d’identifier rapidement les **points faibles et goulets d’étranglement**
+
+![WhatsApp Image 2025-11-11 à 22 59 18_f5ffeda0](https://github.com/user-attachments/assets/59dcb90f-8976-448f-9230-7ba5a4621036)
+
+####   Conclusion 
+
+Ce projet compare les performances de trois implémentations REST Java : **JAX-RS (Jersey)**, **Spring MVC**, et **Spring Data REST**, à l’aide de **JMeter, Prometheus, Grafana, InfluxDB et Docker**.  
+L’objectif est d’évaluer la capacité des serveurs à gérer des charges lourdes et des volumes importants de données.
 
