@@ -272,3 +272,7 @@ Il permet de tester la **capacité globale du serveur** sous une charge variée.
 Ce projet compare les performances de trois implémentations REST Java : **JAX-RS (Jersey)**, **Spring MVC**, et **Spring Data REST**, à l’aide de **JMeter, Prometheus, Grafana, InfluxDB et Docker**.  
 L’objectif est d’évaluer la capacité des serveurs à gérer des charges lourdes et des volumes importants de données.
 
+#### Réalisé par : 
+
+EL OUAHI Najat
+Hailala Yassmin
